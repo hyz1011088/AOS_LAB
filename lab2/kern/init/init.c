@@ -9,6 +9,7 @@
 #include <intr.h>
 #include <pmm.h>
 #include <kmonitor.h>
+
 int kern_init(void) __attribute__((noreturn));
 void grade_backtrace(void);
 static void lab1_switch_test(void);
@@ -34,7 +35,6 @@ kern_init(void) {
 
     clock_init();               // init clock interrupt
     intr_enable();              // enable irq interrupt
-    //asm volatile("int $32");
 
     //LAB1: CAHLLENGE 1 If you try to do it, uncomment lab1_switch_test()
     // user/kernel mode switch test
