@@ -39,3 +39,8 @@
      参考：http://blog.csdn.net/speedoniho/article/details/9089449
 
      待补充～
+
+
+## [备注]：
+    config  时大小为：      6M
+    config2 时大小为：      984.6k
