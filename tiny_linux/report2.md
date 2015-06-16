@@ -14,7 +14,7 @@
 下面到步骤是ir193的步骤，现在将步骤描述下来：
 
 ```
-1. 编译内核
+###1. 编译内核
     cd $TOP
     mkdir obj
     mkdir obj/linux_defconfig
@@ -26,7 +26,7 @@
     cp $TOP/obj/linux_defconfig/arch/x86/boot/bzImage $TOP/obj
     KERNEL=$TOP/obj/bzImage
 
-2. 安装busybox
+###2. 安装busybox
     cd $TOP
     mkdir obj/busybox
     cd $TOP/busybox-1.23.2
@@ -52,7 +52,7 @@
     find . -print0 | cpio --null -ov --format=newc | gzip -9 > $TOP/obj/initramfs.cpio.gz
     RAMDISK=$TOP/obj/initramfs.cpio.gz
 
-3. init and mount
+###3. init and mount
 
     cd $TOP/ramdisk
     rm init
@@ -115,7 +115,7 @@ The content:
     find . -print0 | cpio --null -ov --format=newc | gzip -9 > $TOP/obj/initramfs.cpio.gz
     qemu-system-x86_64 -kernel $KERNEL -initrd $RAMDISK
 
-4. 配置网络
+###4. 配置网络
 
 Keep editing /etc/init.d/rcS, add 
 
@@ -158,7 +158,7 @@ You can test it in your tiny system:
 
 ## [练习1]	内核裁剪：
 
-1. 修改configure配置
+###1. 修改configure配置
 
     configure配置项目众多，最开始到时候对于每个配置到具体功能不太清楚，不知道应该裁剪哪个配置之后kernel还能跑起来，只能一个一个试，不过耗时太长，而且容易出错。在过程中参考了：
 
@@ -168,7 +168,7 @@ You can test it in your tiny system:
 
     还有一个思路就是使用make allnoconfig就行一个一个添加，但是这个工作量也不小，耗时也很大。
 
-2. 裁剪之后大小
+###2. 裁剪之后大小
 
     编译的是64位内核。
     config  时大小为：      6M
@@ -180,7 +180,7 @@ You can test it in your tiny system:
 该步骤和过程主要参考：
 * http://web.yl.is.s.u-tokyo.ac.jp/~tosh/kml/index.html
 
-1. 打补丁
+###1.打补丁
 
     下载[Kernel Mode Linux Patch for Linux Kernel 4.0 (for IA-32, AMD64, MicroBlaze, and ARM)](http://web.yl.is.s.u-tokyo.ac.jp/~tosh/kml/kml/for4.x/kml_4.0_001.diff.gz) 
 
@@ -191,7 +191,9 @@ You can test it in your tiny system:
 
     接着到/linux_deficonfig重新make内核
 
-2. 静态编译
+
+
+###2.静态编译
 
     然后在/ramdisk下创建一个1.c文件，内容如下：
 
@@ -217,7 +219,7 @@ int main(int argc, char* argv[])
     生成文件 1
    
 
-3. 内核态运行
+###3.内核态运行
 
     打包之后运行内核，然后运行1：
     ./1
@@ -231,7 +233,7 @@ int main(int argc, char* argv[])
 
     可以发现，程序输出1.c程序中用该输出到结果，即表示程序已在内核态运行。
 
-4. 检查网络连接
+###4.检查网络连接
 
     使用下面命令创建一个HTTP的server
     python2 -m SimpleHTTPServer
@@ -245,7 +247,7 @@ int main(int argc, char* argv[])
 
 ## [练习3]	问题集锦：
 
-1.busybox编译出错
+###1.busybox编译出错
      错误如下：
 ```
      inetd.c:(.text.unregister_rpc+0x17): undefined reference to `pmap_unset'
@@ -266,7 +268,7 @@ int main(int argc, char* argv[])
 * http://blog.csdn.net/speedoniho/article/details/9089449
 
 
-2.安装完环境之后，使用make menuconfig，发现报错：
+###2.安装完环境之后，使用make menuconfig，发现报错：
 
    错误如下：
 
@@ -284,7 +286,7 @@ int main(int argc, char* argv[])
     安装ncurses-devel包即可。
 
 
-3.eth0启动不了
+###3.eth0启动不了
      裸机8139cp启动不起来，  找不到驱动。。然后insmod /8139cp.ko 手动将8139cp加载进来，但是注意在linux kernel的menuconfig中Enable loadable module support由于要加载8139网卡驱动。
 
      打开
@@ -322,26 +324,26 @@ int main(int argc, char* argv[])
 
 ```
 
-4.网络连接之后发现不能ping
+###4.网络连接之后发现不能ping
 
     在测试网络是否正常连接过程中发现，ping 命令不能运行。后来查资料才知道qemu不支持ping功能。可以使用wget命令进行测试。
 
 
-5.打补丁细节问题
+###5.打补丁细节问题
 
     打补丁的时候kml_4.0_001.diff放的位置，一开是将kml_4.0_001.diff放在/linux_defconfig下，执行patch命令，发现无法进行打补丁操作。
 
     打完补丁之后一定注意重新make一下，最开始容易忘记这个操作，导致无法进行内核态操作。
 
 
-6.每次修改ramdisk忘记打包
+###6.每次修改ramdisk忘记打包
 
     在刚开始做实验的时候，不要忘记每次修改ramdisk之后要执行
     find . -print0 | cpio --null -ov --format=newc | gzip -9 > $TOP/obj/initramfs.cpio.gz
     不然修改的部分没有体现出来，这是对实验不熟悉的情况下容易犯到错误。
 
 
-7.打补丁make之后，发现仍然不能运行在内核态
+###7.打补丁make之后，发现仍然不能运行在内核态
 
     在打完补丁之后，发现仍然不能运行在内核态。当遇到这个问题之后。可能是原来make的内容/linux_defconfig会对结果存在影响，清除原来编译内容，重新编译。即如下操作之后即可解决：
 
@@ -355,7 +357,7 @@ int main(int argc, char* argv[])
     执行完上述操作之后，发现问题解决。
 
 
-8.内核裁剪问题
+###8.内核裁剪问题
 
     在对内核进行裁剪时，修改config内容，然后再重新make，这个过程耗时较多，同时有些配置不太明白具体功能，可能N之后系统就跑不起来了。
 
