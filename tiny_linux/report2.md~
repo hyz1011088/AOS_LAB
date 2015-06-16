@@ -222,12 +222,12 @@ int main(int argc, char* argv[])
     打包之后运行内核，然后运行1：
     ./1
     生成结果如下：
-    ![image](https://github.com/hyz1011088/AOS_LAB/tree/master/tiny_linux/pic/1.png)
+    ![image](https://raw.github.com/hyz1011088/AOS_LAB/tree/master/tiny_linux/pic/1.png)
      
     可以发现，1文件不能运行，提示权限不够！
 
     接着创建在目录下创建/trusted文件夹，并将1文件拷贝到该文件夹下运行，结果如下：
-    ![image](https://github.com/hyz1011088/AOS_LAB/tree/master/tiny_linux/pic/2.png)
+    ![image](https://raw.github.com/hyz1011088/AOS_LAB/tree/master/tiny_linux/pic/2.png)
 
     可以发现，程序输出1.c程序中用该输出到结果，即表示程序已在内核态运行。
 
@@ -237,7 +237,7 @@ int main(int argc, char* argv[])
     python2 -m SimpleHTTPServer
 
     使用wget命令来检测网络连接,结果如下：
-    ![image](https://github.com/hyz1011088/AOS_LAB/tree/master/tiny_linux/pic/3.png)
+    ![image](https://raw.github.com/hyz1011088/AOS_LAB/tree/master/tiny_linux/pic/3.png)
 
     可以发现网络已连接。
 
